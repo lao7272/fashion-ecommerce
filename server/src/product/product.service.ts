@@ -38,7 +38,6 @@ export class ProductService {
     product.description = updateProductDto.description;
     product.price = updateProductDto.price;
     product.stock = updateProductDto.stock;
-    product.createdOn = updateProductDto.createdOn;
     product.updatedOn = Date.now();
     return this.productRepository.save(product)
   }

@@ -1,5 +1,4 @@
 import {
-    IsInt,
     IsArray,
     IsString
 } from 'class-validator';
@@ -11,9 +10,4 @@ export class CreateCartDto {
     @IsArray()
     productArray: Product[];
 
-    @IsInt()
-    createdOn: number;
-
-    @IsInt()
-    updatedOn: number;
 }

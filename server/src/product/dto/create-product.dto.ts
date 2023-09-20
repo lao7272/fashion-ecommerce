@@ -23,10 +23,5 @@ export class CreateProductDto {
 
     @IsArray({message: "Element must be an array"})
     images: string[];
-    
-    @IsInt()
-    createdOn: number;
 
-    @IsInt()
-    updatedOn: number;
 }
