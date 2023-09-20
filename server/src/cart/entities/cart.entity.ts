@@ -9,7 +9,7 @@ export class Cart {
     @Column({ type: 'varchar' })
     userId: string;
 
-    @Column({ type: 'array' })
+    @Column({ type: 'json' })
     productArray: Product[];
 
     @Column({ type: 'bigint' })

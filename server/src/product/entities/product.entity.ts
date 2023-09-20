@@ -13,10 +13,13 @@ export class Product {
     @Column({ type: 'int' })
     price: number;
 
+    @Column({ type: 'int', default: 1 })
+    quant: number;
+
     @Column({ type: 'varchar' })
     description: string;
 
-    @Column({ type: 'text' })
+    @Column({ type: 'json' })
     images: Array<string>
 
     @Column({ type: 'bigint' })
