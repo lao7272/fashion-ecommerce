@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cart } from './entities/cart.entity';
 import { Product } from 'src/product/entities/product.entity';
+import { Request } from 'express';
 
 @Injectable()
 export class CartService {
@@ -12,32 +13,30 @@ export class CartService {
     @InjectRepository(Cart) private readonly cartRepository: Repository<Cart>,
     @InjectRepository(Product) private readonly productRepository: Repository<Product>
   ) {}
-  create(createCartDto: CreateCartDto):Promise<Cart> {
+  async create(req: Request, createCartDto: CreateCartDto):Promise<Cart> {
+    const userId: number = 9; 
+    const findCart: Cart = await this.cartRepository.findOneBy({userId});
+    if(findCart) throw new ConflictException();
     const cart: Cart = new Cart();
     const date: number  = Date.now();
-    cart.userId = createCartDto.userId;
+    cart.userId = userId;
     cart.productArray = createCartDto.productArray;
     cart.createdOn = date;
     cart.updatedOn = date;
     return this.cartRepository.save(cart);
   }
 
-  findAll():Promise<Cart[]> {
-    return this.cartRepository.find();
+  findOne(userId: number):Promise<Cart> {
+    return this.cartRepository.findOneBy({userId});
   }
 
-  findOne(id: number):Promise<Cart> {
-    return this.cartRepository.findOneBy({id});
-  }
-
-  async update(cartId: number, productId: number, updateCartDto: UpdateCartDto): Promise<Cart> {
+  async update(cartId: number, productId: number): Promise<Cart> {
     const newCart: Cart = new Cart();
     const product: Product = await this.productRepository.findOneBy({id: productId});
     const cart: Cart = await this.cartRepository.findOneBy({id: cartId});
     const getProductId = cart.productArray.findIndex(p => p.id === productId);
     const productArray = cart.productArray;
     newCart.id = cartId;
-    newCart.userId = updateCartDto.userId;
     newCart.updatedOn = Date.now();
     if(getProductId === -1) {
       newCart.productArray = [...productArray, product];

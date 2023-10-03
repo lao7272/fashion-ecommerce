@@ -4,6 +4,7 @@ import { compare } from '../utils/bcrypt';
 import { UserService } from 'src/user/user.service';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { User } from 'src/user/entities/user.entity';
+import { SignInData } from 'src/types/Types';
 
 
 @Injectable()
@@ -11,20 +12,30 @@ export class AuthService {
     constructor(
         private jwtService: JwtService,
         private userService: UserService
-    ) {}
+    ) { }
 
     async signUp(createUserDto: CreateUserDto) {
         const user: User = await this.userService.create(createUserDto);
         const payload = { sub: user.id, name: user.name, lastname: user.lastname, email: user.email };
-        return { access_token: await this.jwtService.signAsync(payload) };
+        const { password, ...result } = user;
+        return {
+            access_token: this.jwtService.sign(payload),
+            user: {result}
+        }
     }
-    async signIn({ email, password }: User) {
+    async validateUser({ email, password }: SignInData) {
         const user: User = await this.userService.findOne(email);
-        if (!user) throw new UnauthorizedException();
+        if (!user) return null;
         const isValid = compare(password, user.password);
-        if (!isValid) throw new UnauthorizedException();
-        const payload = { sub: user.id, name: user.name, lastname: user.lastname, email };
-        return { access_token: await this.jwtService.signAsync(payload) };
+        if (!isValid) return null;
+        const { password: pass, ...result } = user;
+        return result;
+    }
+    async signIn(user: any) {
+        const payload = { sub: user.id, name: user.name, lastname: user.lastname, email: user.email };
+        return {
+            access_token: this.jwtService.sign(payload),
+        };
     }
 
 }

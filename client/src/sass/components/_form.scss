@@ -1,0 +1,18 @@
+.form-container {
+    width: 60%;
+    background: #fafaed;
+    margin: 0 auto;
+    padding: 1rem;
+    .form {
+        .form-input {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            margin-bottom: .6rem;
+            .error-message {
+                color: red;
+                font-size: .8rem;
+            }
+        }
+    }
+}

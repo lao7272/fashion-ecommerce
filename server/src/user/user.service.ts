@@ -18,6 +18,7 @@ async create(createUserDto: CreateUserDto) {
         const hashedPassword: string = await hash(createUserDto.password)
         user.name = createUserDto.name;
         user.lastname = createUserDto.lastname;
+        user.age = createUserDto.age;
         user.password = hashedPassword;
         user.email = createUserDto.email;
         user.createdOn = date;

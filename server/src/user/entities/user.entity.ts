@@ -11,6 +11,9 @@ export class User {
     @Column({type: 'varchar', length: 50})
     lastname: string;
 
+    @Column({type: "int"})
+    age: number;
+
     @Column({type: 'varchar', length: 50})
     email: string;
 

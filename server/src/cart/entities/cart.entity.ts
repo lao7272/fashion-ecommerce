@@ -7,7 +7,7 @@ export class Cart {
     id: number;
 
     @Column({ type: 'varchar' })
-    userId: string;
+    userId: number;
 
     @Column({ type: 'json' })
     productArray: Product[];

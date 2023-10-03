@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import constants from '../config/config';
+import constants from '../../config/config';
 
 const { JWT_SECRET } = constants;
 @Injectable()

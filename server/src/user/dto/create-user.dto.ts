@@ -3,7 +3,8 @@ import {
     IsString,
     MinLength,
     IsNotEmpty,
-    Matches
+    Matches,
+    IsInt
 } from 'class-validator';
 
 const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$?%^&*+-]{8,20}$/;
@@ -17,6 +18,10 @@ export class CreateUserDto {
     @MinLength(2, { message: 'Lastname must have atleast 2 characters.' })
     @IsNotEmpty()
     lastname: string;
+
+    @IsInt()
+    @IsNotEmpty()
+    age: number;
 
     @IsNotEmpty()
     @IsEmail()
